@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InteliScan</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- WebAssembly polyfill for some browsers -->
+    <script src="https://cdn.jsdelivr.net/npm/@undecaf/zbar-wasm@0.9.15/dist/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@undecaf/barcode-detector-polyfill@0.9.20/dist/index.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+</div>
+
+<!-- Updated Header -->
+<div class="header">
+    <h1>InteliScan</h1>
+</div>
+
+<!-- Main bg_container with Two New Cards -->
+<div class="bg_container">
+    <div class="product-card" id="emailCard">
+        <div class="card-image">
+            <img src="/static/image/history.gif" alt="Enter Email" style="border-radius: 10px; width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <h3 id="emailGreeting">Enter Your Email</h3>
+        <p>Please enter your email address below to receive price updates </p>
+        
+        <!-- Form to accept email input -->
+        <form method="POST" action="/set_email" id="emailForm" onsubmit="submitEmail()">
+            <input type="email" id="email" placeholder="examplemail@gmail.com" name="email" required>
+            <button type="submit" id="submitButton">Submit</button>
+        </form>
+    </div>
+
+    <!-- SCAN BARCODE Card -->
+    <div class="product-card" id="scanBarcodeCard">
+        <div class="card-image">
+            <img src="/static/image/scan.gif" alt="Scan Barcode" style="border-radius: 10px; width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <h3>SCAN BARCODE</h3>
+        <p><strong>"Click here"</strong> to scan product barcodes and instantly fetch detailed price information, helping you compare deals across multiple online stores with ease.</p>
+    </div>
+</div>
+
+<!-- Hidden original button to keep functionality intact -->
+<button id="startScan" class="scan-button">Start Scan and Scrape</button>
+
+<!-- Barcode scanning container -->
+<div id="scanner-container" style="display:none;">
+    <video id="barcode-scanner" width="100%" height="auto" style="border: 1px solid #ccc; display: block;"></video>
+</div>
+
+<!-- Dynamic content container for product results -->
+<div class="container" id="results">
+    <div id="productContainer"></div> <!-- Dynamic content will go here -->
+</div>
+
+<script src="/static/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+
+<script>
+    function submitEmail() {
+        // Display a popup message (alert)
+        alert("Submitted the mail!");
+    }
+</script>
+
+</body>
+</html>

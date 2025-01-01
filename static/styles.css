@@ -1,0 +1,456 @@
+
+        
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(270deg, #6a0dad, #2a0134, #6a0dad, #8e1a8e);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            color: #333; /* Dark text for readability */
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Header Styling */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5); /* Transparent background */
+            backdrop-filter: blur(10px); /* Glass effect */
+            color: #fff;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+
+        /* Main bg_container */
+        .bg_container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        /* Product card Styling */
+        .product-card {
+            width: 350px;
+            height: 500px;
+            background-color: #ffffff; /* White card background */
+            border: 2px solid #444;
+            border-radius: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Image/Video bg_container Styling */
+        .card-image {
+            width: 100%;
+            height: 65%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            overflow: hidden;
+            border-radius: 10px;
+            background-color: #f5f5f5; /* Light gray background */
+        }
+
+        .card-image img, .card-image video {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: cover;
+        }
+
+        /* Card Title and Description */
+        h3 {
+            font-size: 22px;
+            margin: 10px 0;
+            color: #333; /* Dark text */
+        }
+
+        p {
+            font-size: 16px;
+            color: #555; /* Medium gray text */
+            margin: 0 10px;
+        }
+
+        /* Hidden Start Scan Button */
+        #startScan {
+            display: none;
+        }
+
+
+/* SCRAPED PRODUCT PAGE */
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Product Card Styling */
+.product-block {
+    display: inline-block;
+    width: 275px; /* Each block takes 90% of the page width */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px; /* Space between blocks */
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px; /* Reduce padding on mobile for better spacing */
+    }
+
+    .product-block {
+        width: 100%; /* Ensure product blocks use full width on mobile */
+        max-width: 300px; /* Limit max width for consistency */
+        margin: 10px 0; /* Adjust margins for better spacing */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 5px; /* Reduce padding further for very small screens */
+    }
+
+    .product-block {
+        width: 100%; /* Ensure product blocks are full width on very small screens */
+        max-width: 280px; /* Maintain consistency for very small screens */
+        margin: 10px 0; /* Adjust margin for better spacing */
+    }
+}
+
+
+.product-block:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.price-button{
+    justify-content: right;
+    align-items: center;
+}
+
+.product-name {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Updated Product Site Styling */
+.product-site {
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 10px;
+    display: flex;        /* Align image and text horizontally */
+    align-items: center;  /* Vertically center the image and text */
+    justify-content: center;
+}
+
+/* Add Image Styling */
+.product-site img {
+    width: 24px;          /* Set appropriate size for the icon */
+    height: 24px;
+    margin-right: 8px;    /* Add spacing between the icon and the site name */
+    object-fit: contain;  /* Ensure the image maintains its aspect ratio */
+}
+
+.product-price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #d9534f;
+    margin-bottom: 15px;
+}
+
+.trace-button {
+    padding: 10px 18px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.trace-button:hover {
+    background-color: #1e7e34;
+    transform: scale(1.03);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Clicking Effect */
+#scanBarcodeCard:active {
+    transform: scale(0.95); /* Slightly shrink the card */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); /* Slightly increase shadow to give depth */
+    transition: transform 0.1s ease, box-shadow 0.1s ease; /* Fast transition for clicking effect */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .product-block {
+        width: 95%; /* Adjust to 95% for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .product-block {
+        width: 100%; /* Full width for very small screens */
+    }
+}
+
+a {
+    text-decoration: none;  /* Removes the underline */
+}
+
+
+
+
+input[type="email"] {
+    padding: 12px;
+    width: 80%; /* Adjust width for better responsiveness */
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+/* Input Focus Styling */
+input[type="email"]:focus {
+    border-color: #6a0dad; /* Purple border on focus */
+    outline: none;
+}
+
+/* Submit Button Styling */
+button[type="submit"] {
+    padding: 12px 25px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #6a0dad; /* Purple button */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover Effect for Submit Button */
+button[type="submit"]:hover {
+    background-color: #5b0d8a; /* Darker purple on hover */
+    transform: scale(1.05);
+}
+
+
+
+
+ /* Loading overlay */
+ .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; /* Initially hide the loading animation */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+/* Preserve Existing Code */
+
+/* Additional Responsive Design */
+
+/* Adjust general layout for smaller screens */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .bg_container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .product-card {
+        width: 90%; /* Reduce card width */
+        margin: auto;
+    }
+
+    .card-image {
+        height: 50%; /* Adjust image/video container height */
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    .trace-button {
+        font-size: 12px;
+        padding: 8px 12px; /* Smaller button padding */
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .product-block {
+        width: 100%; /* Full width for very small screens */
+        padding: 15px;
+    }
+
+    .product-site {
+        font-size: 16px; /* Adjust text size for readability */
+    }
+
+    .product-site img {
+        width: 20px; /* Smaller icon size */
+        height: 20px;
+    }
+
+    .product-price {
+        font-size: 18px;
+    }
+
+    input[type="email"] {
+        width: 90%; /* Adjust input width */
+        font-size: 14px;
+    }
+
+    button[type="submit"] {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border-width: 6px;
+    }
+}
+
+/* Fine-tune margins and gaps for better alignment */
+@media (max-width: 320px) {
+    .product-block {
+        padding: 10px;
+    }
+
+    .trace-button {
+        font-size: 10px;
+        padding: 6px 10px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    p {
+        font-size: 12px;
+    }
+
+    input[type="email"] {
+        font-size: 12px;
+    }
+
+    button[type="submit"] {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+}
+
+/* Ensure proper spacing between elements */
+.container {
+    padding: 10px;
+}
+
+.product-block {
+    margin-bottom: 20px; /* Extra space between blocks on mobile */
+}
+
+
+
+/* Existing styles... */
+
+/* Center and resize the camera for desktop view */
+@media (min-width: 768px) {
+    #scanner-container {
+        width: 50%;
+        margin: 20px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #barcode-scanner {
+        width: 100%;
+        height: auto;
+        border: 1px solid #ccc;
+    }
+}
