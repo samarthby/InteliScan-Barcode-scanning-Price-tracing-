@@ -1,5 +1,6 @@
 document.getElementById('scanBarcodeCard').addEventListener('click', function () {
     // Trigger the barcode scanning functionality
+    
     document.getElementById('startScan').click();
 });
 

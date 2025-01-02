@@ -7,7 +7,7 @@
             background: linear-gradient(270deg, #6a0dad, #2a0134, #6a0dad, #8e1a8e);
             background-size: 400% 400%;
             animation: gradientAnimation 10s ease infinite;
-            color: #333; /* Dark text for readability */
+            color: #333; 
         }
 
         @keyframes gradientAnimation {

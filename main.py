@@ -17,9 +17,10 @@ import chromedriver_autoinstaller
 db_config = {
     'host': os.getenv('DB_HOST', 'localhost'),
     'user': os.getenv('DB_USER', 'root'),
-    'password': os.getenv('DB_PASSWORD', 'Sby@577112'), 
+    'password': os.getenv('DB_PASSWORD', 'your_password'),
     'database': os.getenv('DB_NAME', 'productdata')
 }
+
 
 # Selenium WebDriver setup with headless mode
 chromedriver_autoinstaller.install()  # Automatically install the correct version of ChromeDriver
@@ -35,8 +36,8 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key_here')  # Replace with a secure string
 
 # Email configuration
-EMAIL_SENDER = os.getenv('EMAIL_SENDER', 'testit2moro@gmail.com')
-EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD', 'ldxu gazk fhmc eest')
+EMAIL_SENDER = os.getenv('EMAIL_SENDER', 'your_email_sender')
+EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD', 'your_email_password')
 
 # Function to send email notifications
 def send_email(subject, body, receiver_email):
