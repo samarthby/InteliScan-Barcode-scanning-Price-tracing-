@@ -1,6 +1,5 @@
 document.getElementById('scanBarcodeCard').addEventListener('click', function () {
     // Trigger the barcode scanning functionality
-    
     document.getElementById('startScan').click();
 });
 
@@ -8,6 +7,9 @@ document.getElementById('startScan').addEventListener('click', function () {
     // Show the scanner when "Start Scan and Scrape" is clicked
     document.getElementById('scanner-container').style.display = 'block';  // Show video container
     this.style.display = 'none';  // Hide the start scan button
+
+    // Scroll to the camera section
+    document.getElementById('scanner-container').scrollIntoView({ behavior: 'smooth' });
 
     (async function() {
         try {
@@ -131,8 +133,16 @@ function scrollToResults() {
 
 // Function to start tracing
 function startTracing(url) {
-    fetch(`/start_tracing/${encodeURIComponent(url)}`)
-        .then(response => response.json())
-        .then(data => alert(data.message))
-        .catch(error => console.error('Error starting tracing:', error));
+    fetch(`/trace/${encodeURIComponent(url)}`, {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert(data.message);
+        } else {
+            alert('Failed to start tracing.');
+        }
+    })
+    .catch(error => console.error('Error starting tracing:', error));
 }
