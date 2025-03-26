@@ -1,6 +1,6 @@
 import re
 import os
-import requests  # Import the requests library to make HTTP requests
+import requests
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -29,13 +29,29 @@ db_config = {
     'database': os.getenv('DB_NAME')
 }
 
-# Selenium WebDriver setup with headless mode
+# Selenium WebDriver setup with optimized anti-CAPTCHA settings
 chromedriver_autoinstaller.install()  # Automatically install the correct version of ChromeDriver
-chrome_options = Options()
-# chrome_options.add_argument("--headless")
-# chrome_options.add_argument("--disable-gpu")
-# chrome_options.add_argument("--no-sandbox")
-# chrome_options.add_argument("--disable-dev-shm-usage")
+
+# Function to create optimized Chrome options for CAPTCHA bypass
+def get_optimized_chrome_options():
+    options = Options()
+    
+    # Essential settings to bypass CAPTCHA detection
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
+    
+    # Set a common user agent
+    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+    
+    # Uncomment if you want to run headless (but this might increase CAPTCHA chances)
+    # options.add_argument("--headless")
+    # options.add_argument("--disable-gpu")
+    # options.add_argument("--no-sandbox")
+    # options.add_argument("--disable-dev-shm-usage")
+    
+    return options
+
 app = Flask(__name__)
 
 # Set the secret key for session management
@@ -288,15 +304,22 @@ def log_result(message, price, site_url):
         email_body = f"Hii there, \n\nWe've not detected any price change on {site_url}. \n\nThis update was recorded on {timestamp}."
         send_email(email_subject, email_body, user_email)
 
-# Function to check and log prices
+# Function to check and log prices - UPDATED with optimized CAPTCHA bypass
 def check_and_log_price(url):
     """
     Capture all visible content with INR symbol, filter duplicates, and write it to the Content table.
     """
     try:
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+        # Get optimized Chrome options for CAPTCHA bypass
+        options = get_optimized_chrome_options()
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        
+        # Execute stealth JavaScript before loading the page
+        driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+        
+        # Visit the URL
         driver.get(url)
-
+        
         # Clear the Content table before adding new prices
         delete_previous_content_data()
         print("Previous entries in Content table deleted")
@@ -331,7 +354,6 @@ def check_and_log_price(url):
         print(f"Error extracting and storing content: {e}")
     finally:
         driver.quit()
-
 
 # Function to compare a specific site's price from the history with Content table prices
 def compare_site_price_with_content(site_url):
@@ -394,71 +416,112 @@ def start_price_tracing(url):
 
     print(f"Completed {total_checks} traces for {url}. Stopping price tracing.")
 
-# Function to scrape product details from Google using the barcode
+# Function to scrape product details from Google using the barcode - UPDATED with optimized CAPTCHA bypass
 def scrape_product_details(barcode_data):
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    # Get optimized Chrome options for CAPTCHA bypass
+    options = get_optimized_chrome_options()
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    
+    # Execute stealth JavaScript before loading the page
+    driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+    
+    # Modify the window.navigator object to hide automation
+    driver.execute_script("""
+    const newProto = navigator.__proto__;
+    delete newProto.webdriver;
+    navigator.__proto__ = newProto;
+    """)
+    
+    # Set a custom plugin array to make fingerprinting more difficult
+    driver.execute_script("""
+    Object.defineProperty(navigator, 'plugins', {
+        get: function() { return [1, 2, 3, 4, 5]; }
+    });
+    """)
+    
+    # Set a custom language array
+    driver.execute_script("""
+    Object.defineProperty(navigator, 'languages', {
+        get: function() { return ['en-US', 'en']; }
+    });
+    """)
+    
     url = f'https://www.google.com/search?q={barcode_data}'
     driver.get(url)
+    
     website_data = []
     seen_products = set()
-
-    while True:
-        time.sleep(20)
-        site_blocks = driver.find_elements(By.CSS_SELECTOR, "div:has(span.VuuXrf)")
-
-        for block in site_blocks:
-            try:
-                link_element = block.find_element(By.TAG_NAME, "a")
-                full_url = link_element.get_attribute('href')
-
-                product_name_element = block.find_element(By.CSS_SELECTOR, "h3")
-                product_name = product_name_element.text.strip()
-
-                try:
-                    price_element = block.find_element(By.CSS_SELECTOR, "span.LI0TWe.wHYlTd")
-                    price = price_element.text.strip()
-                except:
-                    price = None
-
-                # Extract image source
-                image_element = block.find_element(By.CSS_SELECTOR, "img.XNo5Ab")
-                image_src = image_element.get_attribute('src')
-
-                # Handle price ranges
-                if price and "to" in price:
-                    price_range = price.split(" to ")
-                    price = price_range[1]
-
-                if full_url and product_name and price:
-                    parsed_url = urlparse(full_url)
-                    base_domain = parsed_url.netloc
-
-                    product_key = (base_domain, product_name, price, full_url)
-                    if product_key not in seen_products:
-                        website_data.append({
-                            "site": base_domain,
-                            "product": product_name,
-                            "price": price,
-                            "url": full_url,
-                            "image_src": image_src  # Add image source to the data
-                        })
-                        seen_products.add(product_key)
-                        # Save to database now including product_name
-                        save_to_database(full_url, price, product_name)
-            except Exception as e:
-                print(f"Error processing block: {e}")
-                continue
-
+    
+    # Use a more efficient approach with fewer pages
+    max_pages = 3  # Limit to 3 pages for faster results
+    
+    for page in range(max_pages):
         try:
-            next_button = driver.find_element(By.XPATH, "//span[text()='Next']")
-            next_button.click()
-            time.sleep(2)  # Wait for the next page to load
-        except Exception as e:
-            print(f"Error navigating to next page: {e}")
-            break
+            # Wait for the search results to load
+            WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "div:has(span.VuuXrf)"))
+            )
+            
+            site_blocks = driver.find_elements(By.CSS_SELECTOR, "div:has(span.VuuXrf)")
+            
+            for block in site_blocks:
+                try:
+                    link_element = block.find_element(By.TAG_NAME, "a")
+                    full_url = link_element.get_attribute('href')
 
+                    product_name_element = block.find_element(By.CSS_SELECTOR, "h3")
+                    product_name = product_name_element.text.strip()
+
+                    try:
+                        price_element = block.find_element(By.CSS_SELECTOR, "span.LI0TWe.wHYlTd")
+                        price = price_element.text.strip()
+                    except:
+                        price = None
+
+                    # Extract image source
+                    image_element = block.find_element(By.CSS_SELECTOR, "img.XNo5Ab")
+                    image_src = image_element.get_attribute('src')
+
+                    # Handle price ranges
+                    if price and "to" in price:
+                        price_range = price.split(" to ")
+                        price = price_range[1]
+
+                    if full_url and product_name and price:
+                        parsed_url = urlparse(full_url)
+                        base_domain = parsed_url.netloc
+
+                        product_key = (base_domain, product_name, price, full_url)
+                        if product_key not in seen_products:
+                            website_data.append({
+                                "site": base_domain,
+                                "product": product_name,
+                                "price": price,
+                                "url": full_url,
+                                "image_src": image_src  # Add image source to the data
+                            })
+                            seen_products.add(product_key)
+                            # Save to database now including product_name
+                            save_to_database(full_url, price, product_name)
+                except Exception as e:
+                    print(f"Error processing block: {e}")
+                    continue
+            
+            # Try to go to the next page if not on the last page
+            if page < max_pages - 1:
+                next_button = driver.find_element(By.XPATH, "//span[text()='Next']")
+                next_button.click()
+                # Wait a short time for the next page to load
+                time.sleep(2)
+        except Exception as e:
+            print(f"Error on page {page+1}: {e}")
+            break
+    
     driver.quit()
     return website_data
+
+# Global variable for user email
+user_email = None
 
 # Route to start the barcode scan and scraping process
 @app.route('/scan_and_scrape', methods=['POST'])
