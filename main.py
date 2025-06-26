@@ -573,5 +573,5 @@ def trace(url):
 
 if __name__ == "__main__":
     create_tables()  # Create tables if they don't exist
-    delete_previous_data()  # Delete previous data
+    delete_previous_data()  
     app.run(debug=True)
