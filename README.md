@@ -64,9 +64,11 @@ Inteliscan is a full-stack web application that scans product barcodes using a d
 
 
 /screenshots
- ├── ![Front page](./screenshots/front.png)
- ├── ![barcode-scan](./screenshots/barcode-scan.png)
- ├── ![available_in](./screenshots/available_in.png)
+![Front page](./screenshots/front.png)
+
+![barcode-scan](./screenshots/barcode-scan.png)
+
+![available_in](./screenshots/available_in.png)
 
 
 ---
@@ -159,6 +161,5 @@ http://127.0.0.1:5000
 
 ---
 
-```
 
 
