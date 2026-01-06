@@ -1,16 +1,3 @@
-Perfect 👍
-Below is your **updated `README.md` content** with:
-
-✅ **Screenshots section added in between**
-❌ **License section removed**
-❌ **Author section removed**
-✅ Everything else kept **exactly the same style and clarity**
-
-You can **directly copy–paste** this.
-
----
-
-````md
 # Inteliscan – Barcode-Based Product Price Tracker
 
 Inteliscan is a full-stack web application that scans product barcodes using a device camera, scrapes live product prices from the web, stores price history, and notifies users via email when price changes are detected.
@@ -77,9 +64,9 @@ Inteliscan is a full-stack web application that scans product barcodes using a d
 
 ```text
 /screenshots
- ├── front.png
- ├── barcode-scan.png
- ├── available_in
+ ├── ![Front page](./screenshots/front.png)
+ ├── ![barcode-scan](./screenshots/barcode-scan.png)
+ ├── ![available_in](./screenshots/available_in.png)
 ```
 
 ---
