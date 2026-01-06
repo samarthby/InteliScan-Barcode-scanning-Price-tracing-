@@ -62,12 +62,12 @@ Inteliscan is a full-stack web application that scans product barcodes using a d
 - Product listing with prices and images  
 - Price tracing and email notification flow  
 
-```text
+
 /screenshots
  ├── ![Front page](./screenshots/front.png)
  ├── ![barcode-scan](./screenshots/barcode-scan.png)
  ├── ![available_in](./screenshots/available_in.png)
-```
+
 
 ---
 
